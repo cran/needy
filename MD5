@@ -1,0 +1,12 @@
+1c204bf825c6292758445cd69749e9e4 *DESCRIPTION
+6f5188f741bbda05979a23b406e38c53 *NAMESPACE
+130fca6b4fa2a55197169258515859c6 *R/require_a.R
+0f09f5e2759d7542733c92f28865d70b *R/tools.R
+213624ca112d00870d886a8af3cd1c2c *R/trait_tests.R
+7a51afc77bcb560d0c87155a33f49924 *README.md
+c00f5411e7719ea33e986d9af4cdb7f4 *inst/examples/example-require_a.R
+6ca08dc0857fe2740f0cb7bcc83449e4 *inst/tests/test-custom-tests.R
+7810d76ce91633ca5371938b4ea84cf0 *inst/tests/test-errors.R
+30c73663b6a4e7b31cca9854d9912a4c *inst/tests/test-report.R
+14c1bfea204eb0d633e317e9551ded9b *man/require_a.Rd
+08a0f9b6e06693746e79d7c429e1799e *tests/run_tests.R
