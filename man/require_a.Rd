@@ -1,11 +1,14 @@
 \name{require_a}
+\alias{add_trait}
 \alias{implemented_traits}
 \alias{require_a}
-\title{ensure a value has a desired set of traits.}
+\title{Ensure a value has a desired set of traits.}
 \usage{
   require_a(traits, value, pcall = NULL)
 
   implemented_traits()
+
+  add_trait(name, trait_test)
 }
 \arguments{
   \item{traits}{a character vector, with each element being
@@ -19,9 +22,16 @@
   be displayed when an error is thrown by require_a. See
   details. optional, defaults to displaying the call to
   require_a().}
+
+  \item{name}{a string giving the name of the test to add.
+  required.}
+
+  \item{trait_test}{a unary function that returns a true or
+  false value.  This function should tests for a particular
+  trait.required.}
 }
 \description{
-  ensure a value has a desired set of traits.
+  Ensure a value has a desired set of traits.
 }
 \details{
   the option \code{pcall} is included so that it is
@@ -85,7 +95,7 @@
   \code{Error: require_a("white-whale", 1): unrecognised
   trait(s): (white-whale)}
 
-  similarily, if a value doesn't have any other desired
+  Similarily, if a value doesn't have any other desired
   compound traits then an error is thrown:
 
   \code{require_a(c("length_one list", "null"), 1)}
@@ -93,6 +103,14 @@
   \code{Error: require_a(c("length_one list", "null"), 1):
   the value 1 didn't match any of the following compound
   traits: length_one and list, or null'}
+
+  As of version 0.2 trait negation is also supported:
+
+  \code{require_a("!null", NULL)}
+
+  \code{Error: require_a("!null", NULL): the value NULL
+  didn't match any of the following compound traits:
+  !null'}
 }
 \examples{
 
@@ -108,10 +126,29 @@ safeMap <- function (f, x) {
 
 safeSum <- function (a, b) {
 
-	require_a( "finite numeric", a, sys.call(sys.parent()) )
-	require_a( "finite numeric", b, sys.call(sys.parent()) )
+	pcall <- sys.call()
+	require_a("finite numeric", a, pcall)
+	require_a("finite numeric", b, pcall)
 
 	a + b
+}
+
+definitelyNotNull <- function (x) {
+
+	pcall <- sys.call()
+	require_a("!null", x, pcall)
+
+	x
+}
+
+safeMatchFun <- function (f) {
+	# match.fun with arg checking
+
+	pcall <- sys.call()
+	require_a(c("string", "function", "symbol"), f, pcall)
+	require_a("functionable") #my prefered shorthand for the above
+
+	match.fun(f)
 }
 }
 

@@ -20,13 +20,12 @@ invalid inputs when defining a function, by defining what types of inputs it
 It is only well defined if f is a binary (or variadic) function, and x is a list,
 a vector, or a pairlist. [1]
 
-```
+```javascript
 safeIndMap <- function (f, x) {
 	
-	pcall <- sys.call(sys.parent())
+	pcall <- sys.call()
 	require_a("binary function", f, pcall)
 	require_a(c("vector", "pairlist"), x)
-
 	Map(f, x, seq_along(x))
 }
 ```
@@ -35,7 +34,7 @@ If ```safeIndMap``` is now called with a three-variable function, a descriptive 
 showing the three-variable function. This error says that it was triggered by the fact
 that f wasn't a binary function, which is a pretty clear error message.
 
-```
+```javascript
 safeIndMap( function (a, b, c) a+b+c, 1:10 )
 
 Error: safeIndMap(function(a, b, c) a + b + c, 1:10): 
@@ -44,6 +43,27 @@ Error: safeIndMap(function(a, b, c) a + b + c, 1:10):
 ```
 We can be fairly confident now that if the user passes incorrect input to safeIndMap they 
 should be able to figure out what went wrong quickly. 
+
+For a full list of implemented traits, use the aptly named ```implemented_traits()```. As of version
+0.1.1, the following traits are implemented.
+
+```javascript
+currently implemented traits:
+ any, array, atomic, binary, boolean, call, character, closure, complex, data.frame, double, environment, expression, factor, false, finite, function, functionable, infinite, integer, language, length_one, length_three, length_two, length_zero, list, listy, logical, matrix, na, name, named, nan, nonnegative, null, nullary, numeric, object, pairlist, positive, primitive, raw, recursive, s4, string, symbol, table, ternary, true, unary, variadic, vector, whole
+```
+See the R documentation ```?require_a``` for more detailed usage information.
+
+Sometimes is it more convenient to give a trait a value *cannot* have. For this reason
+(as of version 0.2) traits can be negated.
+
+```javascript
+safeNotNull <- function (x) {
+	
+	pcall <-sys.call()
+	require_a("!null", x, pcall)
+	X
+}
+```
 
 For a full list of implemented traits, use the aptly named ```implemented_traits()```. See
 the R documentation ```?require_a``` for more detailed usage information.
@@ -56,8 +76,8 @@ a way of reducing the amount of ```if (is.function(f)) stop()` boilerplate code,
 and of standardising error messages. Needy ticks both boxes. Over times I will improve
 this library substantially, but if this library doesn't fit your needs at the moment I recommend:
 
-* [https://github.com/hadley/assertthat](assertthat)
-* [http://cran.r-project.org/web/packages/assertive/index.html](assertive)
+* [assertthat](https://github.com/hadley/assertthat)
+* [assertive](http://cran.r-project.org/web/packages/assertive/index.html)
 
 Assertive is currently the more mature of the two libraries, and falls more into
 the category of data validation (checking if data are email addresses, hex colours, ...). Assertthat

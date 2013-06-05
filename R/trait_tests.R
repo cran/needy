@@ -67,6 +67,12 @@ trait_tests <- ( function () {
 	test_for$vector = is.vector
 
 	# tests I find useful
+	test_for$functionable = 
+		function (value) {
+			(is.character(value) && length(value) == 1) ||
+			is.function(value) ||
+			is.symbol(value)
+		}
 	test_for$false = 
 		function (value) {
 			is.logical(value) && !is.na(value) && !value
@@ -154,11 +160,12 @@ trait_tests <- ( function () {
 		}
 	}
 
-	# check function arity. variadic is always the desired arity
+	# check function arity. variadic is always
+	# the desired arity
 
 	test_for$nullary = 
 		function (value) {
-			!is.function (value) || {
+			!is.function(value) || {
 				params <- xParams(value)
 
 				"..." %in% names(params) ||
@@ -176,7 +183,7 @@ trait_tests <- ( function () {
 		}
 	test_for$binary =
 		function (value) {
-			!is.function (value) || {
+			!is.function(value) || {
 				params <- xParams(value)
 
 				"..." %in% names(params) ||
@@ -185,11 +192,18 @@ trait_tests <- ( function () {
 		}
 	test_for$ternary = 
 		function (value) {
-			!is.function (value) || {
+			!is.function(value) || {
 				params <- xParams(value)
 
 				"..." %in% names(params) ||
 				length(params) == 3
+			}
+		}
+	test_for$variadic =
+		function (value) {
+			!is.function(value) || {
+				params <- xParams(value)
+				"..." %in% names(params)				
 			}
 		}
 
